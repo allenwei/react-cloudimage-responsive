@@ -132,9 +132,7 @@ class BackgroundImg extends Component {
   }
 
   render() {
-    if (typeof window === 'undefined') {
-      return null;
-    }
+    const isServer = typeof window === 'undefined';
 
     const { isLoaded, parentContainerWidth, isProcessed } = this.state;
     const {
@@ -142,7 +140,7 @@ class BackgroundImg extends Component {
       lazyLoadConfig = {}, lazyLoading = this.props.config.lazyLoading, ...otherProps
     } = this.props;
 
-    if (!isProcessed) return <div>{this.props.children}</div>;
+    if (isServer || !isProcessed) return <div>{this.props.children}</div>;
 
     const imgLoadingStyles = config.imgLoadingAnimation ?
       { filter: `blur(${Math.floor(parentContainerWidth / 100)}px)` } : {};

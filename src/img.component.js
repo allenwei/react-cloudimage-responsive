@@ -34,6 +34,12 @@ class Img extends Component {
     }
   }
 
+  getImageSrc() {
+    const { src = '', config = {} } = this.props;
+    const isRelativeUrlPath = checkIfRelativeUrlPath(src);
+    return getImgSrc(src, isRelativeUrlPath, config.baseUrl);
+  }
+
   processImage = () => {
     const imgNode = findDOMNode(this);
     const { src = '', config = {} } = this.props;
@@ -47,8 +53,7 @@ class Img extends Component {
 
     size = isAdaptive ? getAdaptiveSize(size, config) : size;
 
-    const isRelativeUrlPath = checkIfRelativeUrlPath(src);
-    const imgSrc = getImgSrc(src, isRelativeUrlPath, config.baseUrl);
+    const imgSrc = this.getImageSrc()
     const resultSize = isAdaptive ? size : getSizeAccordingToPixelRatio(size);
     //const isPreview = !config.isChrome && (parentContainerWidth > 400) && lazyLoading;
     const isPreview = (parentContainerWidth > 400) && lazyLoading;
@@ -97,7 +102,7 @@ class Img extends Component {
     const isServer = typeof window === 'undefined';
 
     if (isServer) {
-      return <img src={this.props.config.baseUrl + this.props.src}/>;
+      return <img src={this.getImageSrc()}/>;
     }
 
     const {

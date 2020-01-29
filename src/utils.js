@@ -10,7 +10,7 @@ export const checkOnMedia = size => {
 };
 
 export const checkIfRelativeUrlPath = src => {
-  if (src.indexOf('//') === 0) {
+  if (typeof window === 'undefined' && src.indexOf('//') === 0) {
     src = window.location.protocol + src;
   }
   return (src.indexOf('http://') !== 0 && src.indexOf('https://') !== 0 && src.indexOf('//') !== 0);
